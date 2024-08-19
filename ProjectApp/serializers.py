@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Author, Blog, Gallery, Header
+from .models import Category, Project, Gallery, Detail
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -8,18 +8,10 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
-
+class DetailSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Author
+        model = Detail
         fields = "__all__"
-
-    def get_image(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            image_url = obj.image.url
-            return request.build_absolute_uri(image_url)
 
 
 class GallerySerializer(serializers.ModelSerializer):
@@ -36,14 +28,15 @@ class GallerySerializer(serializers.ModelSerializer):
             return request.build_absolute_uri(image_url)
 
 
-class BlogSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
-    author = AuthorSerializer(read_only=True)
-    gallery = GallerySerializer(many=True)
+class ProjectSerial(serializers.ModelSerializer):
     image = serializers.SerializerMethodField()
+    finalImage = serializers.SerializerMethodField()
+    category = CategorySerializer()
+    items = DetailSerializer(many=True, read_only=True)
+    gallery = GallerySerializer(many=True, read_only=True)
 
     class Meta:
-        model = Blog
+        model = Project
         fields = "__all__"
 
     def get_image(self, obj):
@@ -52,8 +45,8 @@ class BlogSerializer(serializers.ModelSerializer):
             image_url = obj.image.url
             return request.build_absolute_uri(image_url)
 
-
-class HeaderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Header
-        fields = "__all__"
+    def get_finalImage(self, obj):
+        request = self.context.get('request')
+        if obj.finalImage:
+            image_url = obj.finalImage.url
+            return request.build_absolute_uri(image_url)
