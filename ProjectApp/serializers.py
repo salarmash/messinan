@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Project, Gallery, Detail
+from .models import Category, Project, Gallery, Detail, Header
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -50,3 +50,9 @@ class ProjectSerial(serializers.ModelSerializer):
         if obj.finalImage:
             image_url = obj.finalImage.url
             return request.build_absolute_uri(image_url)
+
+
+class HeaderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Header
+        fields = "__all__"

@@ -1,7 +1,9 @@
 from django.contrib import admin
-from .models import Category, Project, Gallery, Detail
+from .models import Category, Project, Gallery, Detail, Header
+
 
 admin.site.register(Category)
+admin.site.register(Header)
 
 
 class GalleryAdmin(admin.StackedInline):

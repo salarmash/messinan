@@ -47,3 +47,16 @@ class Detail(models.Model):
     class Meta:
         verbose_name = "آیتم"
         verbose_name_plural = "آیتمها"
+
+
+class Header(models.Model):
+    title = models.CharField(max_length=255, verbose_name="عنوان")
+    subtitle = models.CharField(max_length=255, verbose_name="زیر عنوان")
+    description = models.TextField(verbose_name="متن")
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "هدر"
+        verbose_name_plural = "هدر ها"
